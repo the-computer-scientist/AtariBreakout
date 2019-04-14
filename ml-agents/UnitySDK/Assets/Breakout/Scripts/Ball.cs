@@ -1,16 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Ball : MonoBehaviour
 {
     public float speed;
     public Paddle paddle;
     public BrickManager brickManager;
+    public Text livesCount;
+    public Text scoreCount;
 
     private Rigidbody rb;
-    private int bricksCollected;
     private int lives;
+    private int score;
+    private int scoreTotal;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +28,7 @@ public class Ball : MonoBehaviour
         transform.position = Vector3.zero;
         Vector2 startV = Random.insideUnitCircle.normalized * speed;
         rb.velocity = new Vector3(Mathf.Min(startV.x, startV.y), 0, Mathf.Max(startV.x, startV.y));
+        livesCount.text = lives.ToString();
         if(lives-- <= 0)
         {
             brickManager.Done(-brickManager.GetActiveBrickCount());
@@ -33,13 +38,33 @@ public class Ball : MonoBehaviour
     public void Reset(int lives)
     {
         this.lives = lives;
-        bricksCollected = 0;
+        score = 0;
+        scoreTotal = 0;
+        scoreCount.text = scoreTotal.ToString();
+    }
+
+    public List<float> GetState()
+    {
+        Vector3 ballPos = rb.transform.position;
+        Vector3 ballVel = rb.velocity;
+        Vector3 paddlePos = paddle.transform.position;
+        float paddleVel = paddle.Direction * paddle.speed;
+        List<float> state = new List<float> {
+            ballPos.x,
+            ballPos.z,
+            ballVel.x,
+            ballVel.z,
+            paddlePos.x,
+            paddleVel
+        };
+        state.AddRange(brickManager.GetBricksStatus());
+        return state;
     }
 
     public int GetReward()
     {
-        int reward = bricksCollected;
-        bricksCollected = 0;
+        int reward = score;
+        score = 0;
         return reward;
     }
 
@@ -52,7 +77,9 @@ public class Ball : MonoBehaviour
         }
         else if (other.CompareTag("brick"))
         {
-            bricksCollected++;
+            score++;
+            scoreTotal++;
+            scoreCount.text = scoreTotal.ToString();
             collision.gameObject.SetActive(false);
             if(brickManager.GetActiveBrickCount() == 0)
             {
