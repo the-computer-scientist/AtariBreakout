@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,7 +31,7 @@ public class Ball : MonoBehaviour
         livesCount.text = lives.ToString();
         if(lives-- <= 0)
         {
-            brickManager.Done(-brickManager.GetActiveBrickCount());
+            brickManager.Done(-1);
         }
     }
 
@@ -50,12 +50,12 @@ public class Ball : MonoBehaviour
         Vector3 paddlePos = paddle.transform.position;
         float paddleVel = paddle.Direction * paddle.speed;
         List<float> state = new List<float> {
-            ballPos.x,
-            ballPos.z,
-            ballVel.x,
-            ballVel.z,
-            paddlePos.x,
-            paddleVel
+            ballPos.x / 5.0f,
+            ballPos.z / 5.0f,
+            ballVel.x / speed,
+            ballVel.z / speed,
+            paddlePos.x / 5.0f,
+            paddleVel / paddle.speed
         };
         state.AddRange(brickManager.GetBricksStatus());
         return state;
@@ -83,7 +83,7 @@ public class Ball : MonoBehaviour
             collision.gameObject.SetActive(false);
             if(brickManager.GetActiveBrickCount() == 0)
             {
-                brickManager.Done(10);
+                brickManager.Done(0);
             }
         }
         else if (other.CompareTag("paddle"))

@@ -18,18 +18,6 @@ public class BreakoutAgent : Agent
 
     public override void CollectObservations()
     {
-        //      Vector3 ballPos = ballRb.transform.position;
-        //      Vector3 ballVel = ballRb.velocity;
-        //      Vector3 paddlePos = paddle.transform.position;
-        //float paddleVel = paddle.Direction * paddle.speed;
-        //List<float> bricks = brickManager.GetBricksStatus();
-        //AddVectorObs(ballPos.x);
-        //AddVectorObs(ballPos.z);
-        //AddVectorObs(ballVel.x);
-        //AddVectorObs(ballVel.z);
-        //AddVectorObs(paddlePos.x);
-        //AddVectorObs(paddleVel);
-        //AddVectorObs(bricks);
         AddVectorObs(ball.GetState());
     }
 
