@@ -494,3 +494,7 @@ Episode: 492, Score: 24.0, Avg reward: -11.48
 Episode: 493, Score: 0.0, Avg reward: -11.26
 Episode: 494, Score: -20.0, Avg reward: -11.50
 Episode: 495, Score: -18.0, Avg reward: -11.24
+Episode: 496, Score: 8.0, Avg reward: -10.88
+Episode: 497, Score: -44.0, Avg reward: -11.14
+Episode: 498, Score: -34.0, Avg reward: -11.04
+Episode: 499, Score: -24.0, Avg reward: -10.82
