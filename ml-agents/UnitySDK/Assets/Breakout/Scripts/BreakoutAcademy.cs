@@ -56,7 +56,7 @@ public class BreakoutAcademy : Academy
             float[] state = ball.GetState().ToArray();
             var physics = state.Take(6).Select(num => String.Format("\t\t{0:0.0}\n", num));
             var bricks = state.Skip(6).Select((n,i) => String.Format("{1}{0}", n, i%brickManager.cols == 0 ? "\n\t\t" : ""));
-            stateVec.text = "Ball PosX: \t\t" + physics.ElementAt(0)
+            stateVec.text = "Ball PosX: \t" + physics.ElementAt(0)
                         + "Ball PosY:   \t" + physics.ElementAt(1)
                         + "Ball VelX:   \t" + physics.ElementAt(2)
                         + "Ball VelY:   \t" + physics.ElementAt(3)

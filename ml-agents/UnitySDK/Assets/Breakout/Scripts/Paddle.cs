@@ -26,9 +26,7 @@ public class Paddle : MonoBehaviour
 
     public void Reset()
     {
-        Vector3 paddlePos = transform.position;
-        paddlePos.x = 0;
-        transform.position = paddlePos;
+        transform.position = new Vector3(0, 0, transform.position.z);
         direction = 0;
     }
 }

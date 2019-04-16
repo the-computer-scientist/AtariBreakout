@@ -27,11 +27,11 @@ public class Ball : MonoBehaviour
     {
         transform.position = Vector3.zero;
         Vector2 startV = Random.insideUnitCircle.normalized * speed;
-        rb.velocity = new Vector3(Mathf.Min(startV.x, startV.y), 0, Mathf.Max(startV.x, startV.y));
+        rb.velocity = new Vector3(startV.x, 0, startV.y);
         livesCount.text = lives.ToString();
         if(lives-- <= 0)
         {
-            brickManager.Done(-1);
+            brickManager.Done(-1 * brickManager.GetActiveBrickCount());
         }
     }
 
@@ -50,12 +50,12 @@ public class Ball : MonoBehaviour
         Vector3 paddlePos = paddle.transform.position;
         float paddleVel = paddle.Direction * paddle.speed;
         List<float> state = new List<float> {
-            ballPos.x / 5.0f,
-            ballPos.z / 5.0f,
-            ballVel.x / speed,
-            ballVel.z / speed,
-            paddlePos.x / 5.0f,
-            paddleVel / paddle.speed
+            ballPos.x,// / 5.0f,
+            ballPos.z,// / 5.0f,
+            ballVel.x,// / speed,
+            ballVel.z,// / speed,
+            paddlePos.x,// / 5.0f,
+            paddleVel// / paddle.speed
         };
         state.AddRange(brickManager.GetBricksStatus());
         return state;
@@ -71,6 +71,7 @@ public class Ball : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         GameObject other = collision.gameObject;
+        Vector3 velocity = rb.velocity;
         if (other.CompareTag("pit"))
         {
             Respawn();
@@ -88,27 +89,22 @@ public class Ball : MonoBehaviour
         }
         else if (other.CompareTag("paddle"))
         {
-            Vector3 velocity = rb.velocity;
             velocity.z = Mathf.Abs(velocity.z);
             velocity.x += 0.01f * paddle.speed * paddle.Direction;
-            rb.velocity = velocity;
         }
-        else if (other.CompareTag("top") || other.CompareTag("side"))
+        else if (other.CompareTag("top"))
         {
             Transform tfm = other.transform;
-            var velocity = rb.velocity;
-            if (other.CompareTag("top"))
-            {
-				float direction = Mathf.Abs(velocity.x) > 0.0f ? Mathf.Sign(velocity.x) : -Mathf.Sign(rb.position.x);
-                velocity.x = Mathf.Max(1f, Mathf.Abs(velocity.x)) * direction;
-                velocity.z = Mathf.Abs(velocity.z) * -Mathf.Sign(tfm.position.z);
-            }
-            else if (other.CompareTag("side"))
-            {
-                velocity.z = Mathf.Max(1f, Mathf.Abs(velocity.z)) * Mathf.Sign(velocity.z);
-                velocity.x = Mathf.Abs(velocity.x) * -Mathf.Sign(tfm.position.x);
-            }
-            rb.velocity = velocity;
+            float direction = Mathf.Abs(velocity.x) > 0.0f ? Mathf.Sign(velocity.x) : -Mathf.Sign(rb.position.x);
+            velocity.x = Mathf.Max(1f, Mathf.Abs(velocity.x)) * direction;
+            velocity.z = Mathf.Abs(velocity.z) * -Mathf.Sign(tfm.position.z);
         }
+        else if (other.CompareTag("side"))
+        {
+            Transform tfm = other.transform;
+            velocity.z = Mathf.Max(1f, Mathf.Abs(velocity.z)) * Mathf.Sign(velocity.z);
+            velocity.x = Mathf.Abs(velocity.x) * -Mathf.Sign(tfm.position.x);
+        }
+        rb.velocity = velocity;
     }
 }
