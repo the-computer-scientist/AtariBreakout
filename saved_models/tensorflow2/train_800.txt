@@ -1600,8 +1600,6 @@ Episode: 1598, Score: 32.0, Avg reward: 5.58
 Episode: 1599, Score: 4.0, Avg reward: 5.46
 Episode: 1600, Score: -14.0, Avg reward: 5.72
 Episode: 1601, Score: -6.0, Avg reward: 5.60
-<<<<<<< HEAD
-=======
 Episode: 1602, Score: 36.0, Avg reward: 5.62
 Episode: 1603, Score: 0.0, Avg reward: 5.80
 Episode: 1604, Score: 10.0, Avg reward: 5.72
